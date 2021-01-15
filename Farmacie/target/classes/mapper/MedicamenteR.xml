@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SpringBoot.Farmacie.repository.MedicamenteRepo">
+    <select id="queryMedicamente" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+    </select>
+    <select id="queryMedicamenteById" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+        WHERE
+        id_medicamente=#{idMedicament}
+    </select>
+    <select id="queryMedicamenteByName" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+        WHERE
+            nume_medicament LIKE "%"#{numeMedicament}"%"
+    </select>
+    <select id="queryCountMedicamente" resultType="int">
+        SELECT COUNT(*)
+        FROM medicamente;
+    </select>
+    <select id="querySortByPrice" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+        ORDER BY pret
+    </select>
+    <select id="querySortByPriceDesc" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+        ORDER BY pret DESC
+    </select>
+    <select id="queryForAntibiotice" resultType="SpringBoot.Farmacie.domain.Medicamente">
+      SELECT *
+      FROM medicamente
+      WHERE
+        categorie = 'antibiotic'
+    </select>
+    <select id="queryForVitamine" resultType="SpringBoot.Farmacie.domain.Medicamente">
+        SELECT *
+        FROM medicamente
+        WHERE
+            categorie = 'vitamine'
+    </select>
+
+
+    <insert id="insertMedicament" useGeneratedKeys="true" keyProperty="idMedicament" keyColumn="id_medicament" parameterType="SpringBoot.Farmacie.domain.Medicamente">
+        INSERT INTO
+        medicamente(
+        nume_medicament,
+pret,
+categorie,
+unitati_stoc)
+        VALUES
+        ( #{numeMedicament}, #{pret}, #{categorie}, #{unitatiStoc})
+    </insert>
+    <update id="updatedMedicament" parameterType="SpringBoot.Farmacie.domain.Medicamente">
+        UPDATE medicamente
+        <set>
+            <if test="numeMedicament!=null">nume_medicament=#{numeMedicament},</if>
+            <if test="pret!=null">pret=#{pret},</if>
+            <if test="categorie!=null">categorie=#{categorie},</if>
+            <if test="unitatiStoc!=null">id_farmacie=#{unitatiStoc}</if>
+        </set>
+        WHERE product_id=#{productId}
+    </update>
+    <delete id="deleteMedicament" >
+        DELETE FROM
+        medicamente
+        WHERE
+        id_medicamente=#{idMedicament}
+    </delete>
+</mapper>
